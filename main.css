@@ -1,0 +1,12 @@
+.hutwork {
+  position: relative;
+}
+.badge {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red;
+  top: -7px;
+  left: 40px;
+}
