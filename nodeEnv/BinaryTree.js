@@ -92,6 +92,7 @@ class BinaryTree {
             }
             node.value = minNode.value;
             if (!minNode.leftChild && !minNode.rightChild) {
+              // no child for min node
               console.log("no left no right");
               console.log(prevMinNode);
               console.log(minNode);
@@ -100,20 +101,68 @@ class BinaryTree {
                 prevMinNode.leftChild = undefined;
               }
               if (prevMinNode.rightChild == minNode) {
-                console.log("removing left");
+                console.log("removing right");
                 prevMinNode.rightChild = undefined;
               }
             } else if (!minNode.leftChild) {
+              // no left child for min node
               console.log("no left");
               minNode.value = minNode.rightChild.value;
               minNode.rightChild = undefined;
             } else if (!minNode.rightChild) {
+              // no right child for min node
               console.log(" no right");
               minNode.value = minNode.leftChild.value;
               minNode.leftChild = undefined;
             }
           }
         }
+      }
+    }
+  }
+  levelOrderTraversal() {
+    // visiiting nodes level by level
+    let currentNode = this.root;
+    let queue = [];
+    let treeString = "\n\n\n";
+    if (currentNode == this.root) {
+      queue.push(currentNode);
+
+      treeString += currentNode.value + "\n";
+    }
+    let node = queue.shift();
+    while (node) {
+      if (node.leftChild) {
+        queue.push(node.leftChild);
+
+        treeString += node.leftChild.value + "    ";
+      }
+      if (node.rightChild) {
+        queue.push(node.rightChild);
+
+        treeString += node.rightChild.value + "\n";
+      }
+      node = queue.shift();
+    }
+    console.log(treeString);
+  }
+
+  inOrderTraversal() {
+    // left -> root -> right
+    let currentNode = this.root;
+    let nodeStack = [];
+    while (currentNode || nodeStack.length) {
+      if (currentNode) {
+        nodeStack.push(currentNode);
+      }
+      currentNode = currentNode ? currentNode.leftChild : undefined;
+      if (!currentNode && nodeStack.length) {
+        let poppedNode = nodeStack.pop();
+        console.log(poppedNode.value);
+        if (!poppedNode.rightChild) {
+          continue;
+        }
+        currentNode = poppedNode.rightChild;
       }
     }
   }
@@ -149,7 +198,7 @@ class BinaryTree {
 
 function getUserChoice() {
   let userOpChoice = prompt.question(
-    "What do you want to do ?\n1.Add node\n2.Find node\n3.Delete node\n4.Show tree\n"
+    "What do you want to do ?\n1.Add node\n2.Find node\n3.Delete node\n4.Show tree\n5.Level order\n6.InOrder\n"
   );
 
   return userOpChoice;
@@ -158,6 +207,19 @@ function getUserChoice() {
 exports.BinaryTree = () => {
   let restartPrompt = true;
   let firstBT = new BinaryTree();
+  firstBT.insert(200);
+  firstBT.insert(300);
+  firstBT.insert(250);
+  firstBT.insert(400);
+  firstBT.insert(330);
+  firstBT.insert(340);
+  firstBT.insert(230);
+  firstBT.insert(210);
+  firstBT.insert(100);
+  firstBT.insert(150);
+  firstBT.insert(50);
+  firstBT.insert(25);
+
   do {
     let newNode = prompt.question("Go again ?");
     if (!newNode) {
@@ -187,6 +249,12 @@ exports.BinaryTree = () => {
       case "4":
         string = JSON.stringify(firstBT, null, 4);
         console.log(string);
+        break;
+      case "5":
+        firstBT.levelOrderTraversal();
+        break;
+      case "6":
+        firstBT.inOrderTraversal();
         break;
     }
   } while (restartPrompt);

@@ -5,6 +5,27 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch server.js via nodemon",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/nodeEnv/index.js",
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "debug": "nodeEnv:*"
+      }
+    },
+    {
+      "name": "Launch via NPM",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "debug"],
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    },
+    {
       "name": "Attach by Process ID",
       "processId": "${command:PickProcess}",
       "request": "attach",
@@ -15,7 +36,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/fibonacci.js"
+      "program": "${workspaceFolder}/nodeEnv/index.js"
     }
   ]
 }
