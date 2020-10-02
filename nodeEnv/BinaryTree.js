@@ -166,6 +166,48 @@ class BinaryTree {
       }
     }
   }
+
+  preOrderTraversal() {
+    // root -> left -> right
+    let currentNode = this.root;
+    let nodeStack = [];
+    while (currentNode || nodeStack.length) {
+      if (currentNode) {
+        console.log(currentNode.value);
+        nodeStack.push(currentNode);
+      }
+      currentNode = currentNode ? currentNode.leftChild : undefined;
+      if (!currentNode && nodeStack.length) {
+        let poppedNode = nodeStack.pop();
+        if (!poppedNode.rightChild) {
+          continue;
+        }
+        currentNode = poppedNode.rightChild;
+      }
+    }
+  }
+  postOrderTraversal() {
+    // left -> right -> root
+    let currentNode = this.root;
+    let nodeStack = [];
+    let stackB = [];
+    nodeStack.push(currentNode);
+    while (nodeStack.length) {
+      let poppedNode = nodeStack.pop();
+      stackB.push(poppedNode);
+      if (poppedNode.leftChild) {
+        nodeStack.push(poppedNode.leftChild);
+      }
+      if (poppedNode.rightChild) {
+        nodeStack.push(poppedNode.rightChild);
+      }
+    }
+    let sbPop = stackB.pop();
+    while (sbPop) {
+      console.log(sbPop.value);
+      sbPop = stackB.pop();
+    }
+  }
   find(value) {
     value = +value;
     let toReturn = { prevNode: null, node: null };
@@ -198,7 +240,7 @@ class BinaryTree {
 
 function getUserChoice() {
   let userOpChoice = prompt.question(
-    "What do you want to do ?\n1.Add node\n2.Find node\n3.Delete node\n4.Show tree\n5.Level order\n6.InOrder\n"
+    `What do you want to do ?\n1.Add node\n2.Find node\n3.Delete node\n4.Show tree\n5.Level order\n6.InOrder\n7.PreOrder\n8.PostOrder\n`
   );
 
   return userOpChoice;
@@ -217,6 +259,7 @@ exports.BinaryTree = () => {
   firstBT.insert(210);
   firstBT.insert(100);
   firstBT.insert(150);
+  firstBT.insert(160);
   firstBT.insert(50);
   firstBT.insert(25);
 
@@ -255,6 +298,12 @@ exports.BinaryTree = () => {
         break;
       case "6":
         firstBT.inOrderTraversal();
+        break;
+      case "7":
+        firstBT.preOrderTraversal();
+        break;
+      case "8":
+        firstBT.postOrderTraversal();
         break;
     }
   } while (restartPrompt);
