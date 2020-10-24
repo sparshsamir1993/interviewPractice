@@ -35,7 +35,6 @@ function solveCombinations(
       let currentMapping = mapping[digits[currentDigit]].split("");
       let currentChar = currentMapping.shift();
       while (currentChar) {
-        // currentString += currentChar;
         solveCombinations(
           digits,
           result,
