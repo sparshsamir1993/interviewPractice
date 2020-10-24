@@ -3,18 +3,17 @@
  * @return {boolean}
  */
 var canJump = function (nums) {
-  //   let crossedIndex = {}; // {index: value}
   //   nums = [2, 0, 0];
   //   nums = [3, 2, 1, 0, 4];
-  nums = [2, 3, 1, 1, 4];
+  nums = [8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0];
   let result = { answer: false };
+  let distanceHash = {}; //{index: destinationIndex}
   if (nums.length == 1) return true;
-  //   figureOutJumps(nums, result, 0, nums[0]);
-  figureOutJumps(nums, result, 0);
+  figureOutJumps(nums, result, 0, distanceHash);
   return result.answer;
 };
 
-function figureOutJumps(nums, result, currentIndex) {
+function figureOutJumps(nums, result, currentIndex, distanceHash) {
   if (currentIndex + nums[currentIndex] >= nums.length - 1) {
     result.answer = true;
   }
@@ -22,22 +21,10 @@ function figureOutJumps(nums, result, currentIndex) {
     return;
   }
   let startIndex = currentIndex + nums[currentIndex];
+  distanceHash[currentIndex] = startIndex;
   for (let i = startIndex; i > currentIndex; i--) {
-    if (nums[i]) {
-      figureOutJumps(nums, result, i);
+    if (nums[i] && !distanceHash[i]) {
+      figureOutJumps(nums, result, i, distanceHash);
     }
   }
 }
-
-// function figureOutJumps(nums, result, currentIndex, currentJump) {
-//   if (currentIndex == nums.length - 1) result.answer = true;
-//   if (result.answer) return true;
-//   for (let i = currentIndex; i < currentIndex + currentJump; i++) {
-//     if (i >= nums.length) {
-//       break;
-//     }
-//     if (currentJump) {
-//       figureOutJumps(nums, result, i + 1, nums[i + 1]);
-//     }
-//   }
-// }
