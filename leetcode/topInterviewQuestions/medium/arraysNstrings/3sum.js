@@ -3,37 +3,39 @@
  * @return {number[][]}
  */
 var threeSum = function (nums) {
-  nums = [-1, 0, 1, 2, -1, -4, -5, 2, 3, 7];
+  // nums = [-1, 0, 1, 2, -1, -4, -5, 2, 3, 7];
+  nums = [-1, 0, 1, 2, -1, -4];
+  let numsSet = {};
+  // nums = [];
+  // numsSet.forEach((x) => nums.push(x));
   nums = nums.sort((a, b) => a - b);
-  let i = 0;
   let result = [];
-  let resultSet = new Set();
-  let current;
-  let threeSumHash = {};
-
-  let twoSumArr = Array(nums.length)
-    .fill(0)
-    .map((_) => Array(nums.length).fill(0));
-  // let result = [];
-
   for (let i = 0; i < nums.length; i++) {
-    let passedHash = {};
-    for (let j = i + 1; j < nums.length; j++) {
-      twoSumArr[i][j] = nums[i] + nums[j];
-      let diff = 0 - twoSumArr[i][j];
-      if (passedHash[diff] != undefined) {
-        result.push([nums[i], nums[j], diff]);
+    if (nums[i] != nums[i - 1]) {
+      let toFind = 0 - nums[i];
+      if (nums[i] > 0) break;
+      let low = i + 1,
+        high = nums.length - 1;
+      while (low < high) {
+        if (nums[low] + nums[high] == toFind) {
+          result.push([nums[i], nums[low], nums[high]]);
+          // numsSet[[nums[i], nums[low], nums[high]].toString()] = [
+          //   nums[i],
+          //   nums[low],
+          //   nums[high],
+          // ];
+          while (low < high && nums[low] == nums[low + 1]) low++;
+          while (low < high && nums[high] == nums[high - 1]) high--;
+          low++;
+          high--;
+        } else if (nums[low] + nums[high] < toFind) {
+          low++;
+        } else if (nums[low] + nums[high] > toFind) {
+          high--;
+        }
       }
-      if (passedHash[nums[j]] == undefined) passedHash[nums[j]] = true;
     }
   }
-  let finalRes = result.filter((x) => {
-    let sorted = x.sort((a, b) => a - b);
-    if (!resultSet.has(sorted.join())) {
-      resultSet.add(sorted.join());
-      return x;
-    }
-  });
-  // console.log(nums, twoSumArr, finalRes, resultSet);
-  return finalRes;
+  return result;
+  // return Object.values(numsSet);
 };
